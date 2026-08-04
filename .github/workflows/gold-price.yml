@@ -1,0 +1,38 @@
+name: อัปเดตราคาทอง
+
+on:
+  schedule:
+    # ทุก 15 นาที (GitHub อาจดีเลย์ได้ในช่วง peak — ปกติ 15-25 นาที)
+    - cron: '*/15 * * * *'
+  workflow_dispatch:        # กดรันเองได้จากแท็บ Actions
+  push:
+    branches: [main]
+    paths: ['.github/workflows/gold-price.yml']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gold-price
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: ดึงราคาทองจากสมาคมค้าทองคำ
+        run: python .github/scripts/fetch_gold.py
+
+      - name: Commit ถ้าราคาเปลี่ยน
+        run: |
+          if git diff --quiet -- gold.json; then
+            echo "ราคาไม่เปลี่ยน — ไม่ต้อง commit"
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add gold.json
+          git commit -m "chore: อัปเดตราคาทอง $(python -c "import json;d=json.load(open('gold.json'));print(f\"{d['sell']:.0f}/{d['buy']:.0f} @ {d['updated_at']}\")")"
+          git push
