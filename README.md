@@ -20,6 +20,18 @@
 
 **กดอัปเดตเองทันที:** แท็บ Actions → "อัปเดตราคาทอง" → Run workflow
 
+## โครงสร้างโฟลเดอร์
+
+```
+C:\Projects\twc9-landing\        ← โปรเจคทั้งหมดอยู่ที่นี่ที่เดียว (มี shortcut บน Desktop)
+├── index.html                   ← หน้าที่ deploy จริง
+├── gold.json                    ← ราคาทอง อัปเดตโดย GitHub Actions
+├── support.js · image-slot.js   ← ไลบรารีที่หน้าเว็บใช้
+├── uploads/                     ← รูปที่หน้าเว็บใช้
+├── design-source/               ← ไฟล์ออกแบบต้นฉบับ (.dc.html) ที่ index.html สร้างมาจาก
+└── .github/                     ← workflow + สคริปต์ดึงราคาทอง
+```
+
 ## ตั้งค่า GitHub Pages
 
 Settings → Pages → Source: **Deploy from a branch** → Branch `main` / `(root)` → Save
