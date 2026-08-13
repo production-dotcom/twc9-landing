@@ -2,9 +2,9 @@
   "status": "success",
   "source": "thaigold.info · สมาคมค้าทองคำ",
   "kind": "gold_bar",
-  "buy": 68850.0,
-  "sell": 69050.0,
-  "diff": "+0",
-  "updated_at": "09:36",
-  "fetched_at": 1786588622
+  "buy": 68750.0,
+  "sell": 68950.0,
+  "diff": -100,
+  "updated_at": "11:27",
+  "fetched_at": 1786595413
 }
