@@ -410,10 +410,8 @@ class Component extends DCLogic {
     return null;
   }
 
-  // ราคาทองคำแท่ง 96.5% ตามประกาศสมาคมค้าทองคำ
-  // แหล่งหลัก = เซิร์ฟเวอร์ของร้านเอง (serve_lan.py → /api/gold-price)
-  //   เพราะ thaigold.info ไม่ส่ง CORS header เบราว์เซอร์จึงยิงตรงไม่ได้ ต้องผ่าน proxy ฝั่งเรา
-  // แหล่งสำรอง = api.chnwt.dev (เปิด CORS แต่บางช่วงคืนค่าว่าง)
+  // ราคาทองคำแท่ง 96.5% — ทุกแหล่งเป็น API กลางของเรา (ห้ามยิงต้นทางเอง: thaigold/goldtraders/chnwt)
+  // เราจัดการ fallback + ธง (stale/manual/estimated/disputed) ให้หมดแล้วฝั่งเซิร์ฟเวอร์
   sources() {
     const own = this.props.goldApiUrl;
     const list = [];
@@ -421,15 +419,15 @@ class Component extends DCLogic {
       if (!j || j.status === "failure") return null;
       return { sell: this.num(j.sell), buy: this.num(j.buy), at: String(j.updated_at || "") };
     } });
-    if (own) list.push(mine(own));
-    list.push(mine("./gold.json?t=" + Math.floor(Date.now() / 60000)));  // GitHub Actions อัปเดตให้ทุก 15 นาที
-    list.push(mine("/api/gold-price"));                        // เมื่อหน้านี้ถูก serve จาก serve_lan.py ในร้าน
-    list.push({ url: "https://api.chnwt.dev/thai-gold-api/latest", parse: (j) => {
-      const res = (j && j.response) || j || {}, p = res.price || {};
-      const bar = p.gold_bar || {}, orn = p.gold || {};
-      return { sell: this.num(bar.sell) || this.num(orn.sell), buy: this.num(bar.buy) || this.num(orn.buy),
-               at: [res.update_date, res.update_time].filter(Boolean).join(" ") };
+    // แหล่งสำรองสุดท้าย = API กลางของเรา (public) — คนละ shape กับ gold.json (barSell/barBuy/updated)
+    const apiOurs = (u) => ({ url: u, parse: (j) => {
+      if (!j || j.ok === false) return null;
+      return { sell: this.num(j.barSell), buy: this.num(j.barBuy), at: String(j.updated || "") };
     } });
+    if (own) list.push(mine(own));
+    list.push(mine("./gold.json?t=" + Math.floor(Date.now() / 60000)));       // GitHub Actions ดึงจาก API เราให้ทุก 15 นาที
+    list.push(apiOurs("/api/gold-price"));                                      // เมื่อหน้านี้ถูก serve จากเซิร์ฟเวอร์ในร้าน
+    list.push(apiOurs("https://admin.twc9sai5.com/api/gold-price"));            // relay กลาง (public) — สำรองสด
     return list;
   }
 
