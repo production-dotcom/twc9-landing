@@ -1,16 +1,16 @@
 {
   "status": "success",
-  "source": "API ทวีชัย ๙ (thaigold)",
+  "source": "API ทวีชัย ๙ (goldtraders)",
   "kind": "gold_bar",
-  "buy": 61550.0,
-  "sell": 61750.0,
-  "ornamentBuy": 61550.0,
-  "ornamentSell": 62300.0,
-  "diff": "-700",
+  "buy": 61850.0,
+  "sell": 62050.0,
+  "ornamentBuy": 60609.68,
+  "ornamentSell": 62850.0,
+  "diff": "",
   "stale": false,
   "manual": false,
   "estimated": false,
   "disputed": false,
-  "updated_at": "14:03",
-  "fetched_at": 1794812735
+  "updated_at": "16/11/2569 เวลา 17:03 น. (ครั้งที่ 37)",
+  "fetched_at": 1794848487
 }
