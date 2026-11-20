@@ -2,15 +2,15 @@
   "status": "success",
   "source": "API ทวีชัย ๙ (goldtraders)",
   "kind": "gold_bar",
-  "buy": 56950.0,
-  "sell": 57150.0,
-  "ornamentBuy": 55803.96,
-  "ornamentSell": 57950.0,
+  "buy": 57400.0,
+  "sell": 57600.0,
+  "ornamentBuy": 56258.76,
+  "ornamentSell": 58400.0,
   "diff": "",
   "stale": false,
   "manual": false,
   "estimated": false,
   "disputed": false,
-  "updated_at": "20/11/2569 เวลา 09:52 น. (ครั้งที่ 12)",
-  "fetched_at": 1795143563
+  "updated_at": "20/11/2569 เวลา 17:29 น. (ครั้งที่ 90)",
+  "fetched_at": 1795173605
 }
